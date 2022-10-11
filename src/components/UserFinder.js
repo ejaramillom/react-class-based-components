@@ -8,12 +8,12 @@ class UserFinder extends Component {
   // the problem here with class based components is that you can only link
   // ONE component to ONE single context using static objects
 
-  // static contextType = UsersContext;
+  static contextType = UsersContext;
 
   constructor() {
     super();
     this.state = {
-      filteredUsers: this.context.users,
+      filteredUsers: [],
       searchTerm: "",
     };
   }
@@ -52,7 +52,6 @@ class UserFinder extends Component {
   render() {
     return (
       <Fragment>
-        <UsersContext.Consumer></UsersContext.Consumer>
         <div className={classes.finder}>
           <input type="search" onChange={this.searchChangeHandler.bind(this)} />
         </div>
