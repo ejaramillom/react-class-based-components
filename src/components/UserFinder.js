@@ -2,38 +2,46 @@ import { Fragment, Component } from "react";
 
 import Users from "./Users";
 import classes from "./UserFinder.module.css";
-
-const DUMMY_USERS = [
-  { id: "u1", name: "Max" },
-  { id: "u2", name: "Manuel" },
-  { id: "u3", name: "Julie" },
-];
+import UsersContext from "../store/user-context";
 
 class UserFinder extends Component {
+  // the problem here with class based components is that you can only link
+  // ONE component to ONE single context using static objects
+
+  // static contextType = UsersContext;
+
   constructor() {
     super();
     this.state = {
-      filteredUsers: DUMMY_USERS,
+      filteredUsers: this.context.users,
       searchTerm: "",
     };
   }
 
+  componentDidMount() {
+    // for example send an http request to fetch data ...
+    this.setState({ filteredUsers: this.context.users });
+  }
+  // so, for the context, you call the data using componentDidMount
+  // and then assign the data with this.context.whatever
+  // to a state
+
   // in case we would fetch the users from a database
-  // we have to use componentDidMount, which works AFTER 
+  // we have to use componentDidMount, which works AFTER
   // the component was rendered for the first time
   // and of course it onlyu runs one time
 
   componentDidUpdate(prevProps, prevState) {
     if (prevState.searchTerm !== this.state.searchTerm) {
       this.setState({
-        filteredUsers: DUMMY_USERS.filter((user) =>
+        filteredUsers: this.context.users.filter((user) =>
           user.name.includes(this.state.searchTerm)
         ),
       });
     }
   }
 
-  // here we updated the entire component to become a class component, 
+  // here we updated the entire component to become a class component,
   // and also included the useEffect that runs every time the component is
   // updated, which means reevaluated and re rendered
 
@@ -44,6 +52,7 @@ class UserFinder extends Component {
   render() {
     return (
       <Fragment>
+        <UsersContext.Consumer></UsersContext.Consumer>
         <div className={classes.finder}>
           <input type="search" onChange={this.searchChangeHandler.bind(this)} />
         </div>
