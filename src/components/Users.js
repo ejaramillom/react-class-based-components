@@ -17,6 +17,15 @@ class Users extends Component {
     };
   }
 
+  componentDidUpdate() {
+    if (this.props.users.length === 0) {
+      throw new Error("No users provided!");
+    }
+  }
+
+  // this breaks the app if it is not handled
+  // so we have to do an error boundary
+
   // in class based components the state is ALWAYS an object and has to be called state
 
   toggleUsersHandler() {
