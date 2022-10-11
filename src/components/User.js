@@ -3,6 +3,13 @@ import { Component } from "react";
 import classes from "./User.module.css";
 
 class User extends Component {
+  componentWillUnmount() {
+    console.log('user will unmount');
+  }
+
+  // this runs for every component destroyed, meaning three users
+  // so for example when we conditionally render the users and then hide them
+
   render() {
     return <li className={classes.user}>{this.props.name}</li>;
   }
